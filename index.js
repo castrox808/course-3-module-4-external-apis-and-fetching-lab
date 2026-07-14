@@ -1,4 +1,4 @@
- const weatherApi = "https://weather.gov";
+ const weatherApi = "https://api.weather.gov/alerts/active?area=";
 
 const stateInput = document.getElementById('state-input') || document.getElementById('city-input');
 const fetchButton = document.getElementById('fetch-alerts');
@@ -65,7 +65,6 @@ function fetchWeatherData(city) {
     return fetchWeatherAlerts(city);
 }
 
-// Fixed the template syntax error
 function displayAlerts(data, location) {
     if (!alertsDisplay) return;
     alertsDisplay.innerHTML = '';
