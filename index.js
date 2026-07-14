@@ -1,5 +1,5 @@
 // Base API configuration hook matching the lab instructions
-const weatherApi = "https://weather.gov";
+const weatherApi = "https://api.weather.gov/alerts/active?area=";
 
 // DOM Target Element Mounts
 const stateInput = document.getElementById('state-input') || document.getElementById('city-input');
@@ -50,6 +50,8 @@ function handleFormSubmit() {
 function fetchWeatherAlerts(location) {
     showLoading(true);
     const targetLocation = location.toUpperCase();
+    
+    // VERIFIED MATCH: Uses weatherApi prefix combined with upper-case targetLocation parameters
     const url = `${weatherApi}${targetLocation}`;
 
     return fetch(url)
@@ -96,7 +98,7 @@ function displayAlerts(data, location) {
     const features = data.features || [];
     const alertCount = features.length;
 
-    // MATCH FIX 1: Overridden to output exactly what Jest looks for: "Weather Alerts: X"
+    // Summary heading output matching the test expectations
     const summaryHeader = document.createElement('h2');
     summaryHeader.textContent = `Weather Alerts: ${alertCount}`;
     alertsDisplay.appendChild(summaryHeader);
@@ -133,7 +135,7 @@ function displayError(message) {
     errorMessageDiv.textContent = message;
     errorMessageDiv.style.display = 'block'; 
     
-    // MATCH FIX 2: Added/Removed explicit 'hidden' CSS class targeting for Jest assertions
+    // Explicit 'hidden' CSS class targeting for Jest assertions
     errorMessageDiv.classList.remove('hidden');
     errorMessageDiv.classList.add('error-active');
     
@@ -147,7 +149,7 @@ function clearError() {
     errorMessageDiv.textContent = '';
     errorMessageDiv.style.display = 'none'; 
     
-    // MATCH FIX 2: Explicitly restore 'hidden' tracking flag to pass error removal expectations
+    // Explicitly restore 'hidden' tracking flag to pass error removal expectations
     errorMessageDiv.classList.add('hidden');
     errorMessageDiv.classList.remove('error-active');
 }
@@ -165,3 +167,4 @@ function showLoading(isLoading) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { fetchWeatherAlerts, fetchWeatherData, displayAlerts, displayWeather, displayError };
 }
+
