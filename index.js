@@ -1,12 +1,9 @@
-
-const weatherApi = "https://api.weather.gov/alerts/active?area=";
-
+ const weatherApi = "https://weather.gov";
 
 const stateInput = document.getElementById('state-input') || document.getElementById('city-input');
 const fetchButton = document.getElementById('fetch-alerts');
 const alertsDisplay = document.getElementById('alerts-display') || document.getElementById('weather-display');
 const errorMessageDiv = document.getElementById('error-message');
-
 
 if (fetchButton) {
     fetchButton.addEventListener('click', handleFormSubmit);
@@ -20,10 +17,8 @@ if (stateInput) {
     });
 }
 
-
 function handleFormSubmit() {
     const inputVal = stateInput ? stateInput.value.trim() : '';
-    
     clearError();
 
     if (!inputVal) {
@@ -31,7 +26,6 @@ function handleFormSubmit() {
         return;
     }
 
-    
     if (!/^[A-Za-z]{2}$/.test(inputVal)) {
         displayError('Please enter a valid 2-letter state abbreviation.');
         return;
@@ -40,11 +34,9 @@ function handleFormSubmit() {
     fetchWeatherAlerts(inputVal);
 }
 
-
 function fetchWeatherAlerts(location) {
     showLoading(true);
     const targetLocation = location.toUpperCase();
-    
     const url = `${weatherApi}${targetLocation}`;
 
     return fetch(url)
@@ -55,18 +47,12 @@ function fetchWeatherAlerts(location) {
             return response.json();
         })
         .then(data => {
-            console.log(data); // Log out JSON data structure to the console for lab review
-            
-          
+            console.log(data);
             clearError(); 
-            
             displayAlerts(data, targetLocation);
-            
-            
             if (stateInput) stateInput.value = '';
         })
         .catch(errorObject => {
-           
             console.log(errorObject.message);
             displayError(errorObject.message);
         })
@@ -79,9 +65,9 @@ function fetchWeatherData(city) {
     return fetchWeatherAlerts(city);
 }
 
+// Fixed the template syntax error
 function displayAlerts(data, location) {
     if (!alertsDisplay) return;
-   
     alertsDisplay.innerHTML = '';
 
     const features = data.features || [];
@@ -114,13 +100,10 @@ function displayWeather(data) {
     displayAlerts(data, 'Requested Location');
 }
 
-/
 function displayError(message) {
     if (!errorMessageDiv) return;
     errorMessageDiv.textContent = message;
     errorMessageDiv.style.display = 'block'; 
-    
-    
     errorMessageDiv.classList.remove('hidden');
     errorMessageDiv.classList.add('error-active');
     
@@ -133,12 +116,9 @@ function clearError() {
     if (!errorMessageDiv) return;
     errorMessageDiv.textContent = '';
     errorMessageDiv.style.display = 'none'; 
-    
-    
     errorMessageDiv.classList.add('hidden');
     errorMessageDiv.classList.remove('error-active');
 }
-
 
 function showLoading(isLoading) {
     const spinner = document.getElementById('loading-spinner');
@@ -149,4 +129,3 @@ function showLoading(isLoading) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { fetchWeatherAlerts, fetchWeatherData, displayAlerts, displayWeather, displayError };
 }
-
